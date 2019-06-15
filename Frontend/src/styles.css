@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+
+.mt-50{
+    margin-top:50px !important;
+}
+.mb-100{
+    margin-bottom:100px !important;
+}
+
+.dataTables_empty {
+    display: none;
+  }

@@ -1,0 +1,87 @@
+<div class="offset-md-2 col-md-8 pb-5">
+
+  <div class="col-md-12 mb-5">
+
+    <table datatable [dtOptions]="dtOptions"  [dtTrigger]="dtTrigger" class="table table-sm table-responsive">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Father Name</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="allMISData?.length !== 0">
+        <tr *ngFor="let data of allMISData">
+          <td>{{ data.name }}</td>
+          <td>{{ data.fname }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.mobile }}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-primary mr-1" [disabled]="editMode" (click)="edit(data)">Edit</button>
+            <button type="button" class="btn btn-sm btn-danger"  [disabled]="editMode" (click)="delete(data)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="allMISData?.length === 0">
+        <tr>
+          <td colspan="6" class="no-data-available">No data!</td>
+        </tr>
+      <tbody>
+    </table>
+  </div>
+  <form #createMIS="ngForm" (ngSubmit)="saveRecord()">
+    <div class="form-group" [class.has-success]="name.valid && (name.touched || name.dirty)"
+      [class.has-danger]="name.invalid && (name.touched || name.dirty)">
+      <label>Name:</label>
+      <input type="text" name="name" [(ngModel)]="model.name"
+        [ngClass]="name.valid && (name.touched || name.dirty) ? 'is-valid': 'is-invalid' " #name="ngModel" required
+        class="form-control">
+      <div class="invalid-feedback">Please enter your name</div>
+    </div>
+    <div class="form-group" [ngClass]="fname.invalid && (fname.touched || fname.dirty) ? 'has-danger' : 'has-success'">
+      <label>Father Name:</label>
+      <input type="text" name="fname" [(ngModel)]="model.fname" #fname="ngModel" required class="form-control"
+        [ngClass]="fname.valid && (fname.touched|| fname.dirty) ?  'is-valid':'is-invalid' ">
+      <div class="invalid-feedback">Please enter your father's name</div>
+    </div>
+    <div class="form-group"
+      [ngClass]="address.invalid && (address.touched || address.dirty) ? 'has-danger' : 'has-success'">
+      <label>Address:</label>
+      <textarea rows=3 cols="4" name="address" [(ngModel)]="model.address" #address="ngModel" required
+        class="form-control"
+        [ngClass]="address.valid && (address.touched || address.dirty) ? 'is-valid' : 'is-invalid'"></textarea>
+      <div class="invalid-feedback">Please enter your address</div>
+    </div>
+    <div class="form-group" [ngClass]="email.invalid && (email.touched || email.dirty) ? 'has-danger' : 'has-success'">
+      <label>Email id:</label>
+      <input type="text" email name="email"
+        [ngClass]="email.valid && (email.touched || email.dirty) ?  'is-valid' :'is-invalid'" [(ngModel)]="model.email"
+        #email="ngModel" required class="form-control">
+      <div class="invalid-feedback">Please enter your valid email</div>
+    </div>
+    <div class="form-group"
+      [ngClass]="mobile.invalid && (mobile.touched || mobile.dirty) ? 'has-danger' : 'has-success'">
+      <label>Mobile No:</label>
+      <input type="number" name="mobile"
+        [ngClass]="mobile.valid && (mobile.touched || mobile.dirty) ? 'is-valid' : 'is-invalid' "
+        [(ngModel)]="model.mobile" #mobile="ngModel" required class="form-control">
+      <div class="invalid-feedback">Please enter your mobile no</div>
+    </div>
+    <div *ngIf="!editMode">
+      <button type="submit" class="btn btn-primary" [disabled]="!createMIS.form.valid">Save Data</button>
+    </div>
+    <div *ngIf="editMode">
+      <button type="button" class="btn btn-primary mr-2" (click)="updateData()" [disabled]="!createMIS.form.valid || !createMIS.form.dirty">Update Data</button>
+      <button class="btn btn-warning" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
+
+
+<ngx-spinner bdColor="#333" size="medium" color="#fff" type="square-jelly-box">
+  <p style="color: #ccc">Loading...</p>
+</ngx-spinner>
