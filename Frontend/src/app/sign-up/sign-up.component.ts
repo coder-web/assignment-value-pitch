@@ -4,6 +4,7 @@ import { IUser } from '../_models/IUser';
 import { UserService } from '../_services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +16,8 @@ export class SignUpComponent implements OnInit {
   constructor(private spinner: NgxSpinnerService, private router: Router, private userService: UserService, private toastr: ToastrService) { }
 
   model: IUser;
-
+  confirm:string;
+  signUpForm: FormGroup;
   ngOnInit() {
     if (this.userService.loggedIn()) this.router.navigate(['dashboard']);
     this.model = {

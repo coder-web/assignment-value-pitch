@@ -31,7 +31,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
   }
   ngOnInit() {
@@ -43,7 +42,6 @@ export class DashboardComponent implements OnInit {
 
   }
   getMisRecords = () => {
-    console.log('asdasd')
     const that = this;
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -101,7 +99,6 @@ export class DashboardComponent implements OnInit {
 
   edit = (data) => {
     this.model = data;
-    console.log(this.model);
     this.editMode = true;
   }
   delete = (data) => {
@@ -125,7 +122,6 @@ export class DashboardComponent implements OnInit {
     }
   }
   updateData = () => {
-    console.log(this.model);
     this.openSpinner();
     this.misService.edit(this.model).subscribe((apiResponse) => {
       if (apiResponse.status === 202) {
@@ -133,6 +129,7 @@ export class DashboardComponent implements OnInit {
       } else {
         this.model = { name: '', fname: '', mobile: 0, email: '', address: '', createdBy: '' }
         this.toastr.success(apiResponse.message);
+        this.editMode=false;
         // this.allMISData = this.allMISData.filter(x => x.misId !== data.misId);
         this.rerender();
       }

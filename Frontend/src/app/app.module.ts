@@ -16,13 +16,15 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ConfirmEqualValidatorDirective } from './_validators/confirm-equal-validator.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
     NavComponent,
-    DashboardComponent
+    DashboardComponent,
+    ConfirmEqualValidatorDirective
   ],
   imports: [
     BrowserModule,

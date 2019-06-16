@@ -1,8 +1,66 @@
 <div class="offset-md-2 col-md-8 pb-5">
 
-  <div class="col-md-12 mb-5">
+  <form #createMIS="ngForm" (ngSubmit)="saveRecord()" class="mb-5">
+    <div class="form-row">
+      <div class="form-group col-md-6" [class.has-success]="name.valid && (name.touched || name.dirty)"
+        [class.has-danger]="name.invalid && (name.touched || name.dirty)">
+        <label>Name:</label>
+        <input type="text" name="name" [(ngModel)]="model.name"
+          [class.is-invalid]="name.invalid && (name.dirty || name.touched)"
+          [class.is-valid]="name.valid && (name.dirty || name.touched)" #name="ngModel" required class="form-control">
+        <div class="invalid-feedback">Please enter your name</div>
+      </div>
+      <div class="form-group col-md-6"
+        [ngClass]="fname.invalid && (fname.touched || fname.dirty) ? 'has-danger' : 'has-success'">
+        <label>Father Name:</label>
+        <input type="text" name="fname" [(ngModel)]="model.fname" #fname="ngModel" required class="form-control"
+          [class.is-invalid]="fname.invalid && (fname.dirty || fname.touched)"
+          [class.is-valid]="fname.valid && (fname.dirty || fname.touched)">
+        <div class="invalid-feedback">Please enter your father's name</div>
+      </div>
+    </div>
 
-    <table datatable [dtOptions]="dtOptions"  [dtTrigger]="dtTrigger" class="table table-sm table-responsive">
+    <div class="form-group"
+      [ngClass]="address.invalid && (address.touched || address.dirty) ? 'has-danger' : 'has-success'">
+      <label>Address:</label>
+      <textarea rows=3 cols="4" name="address" [(ngModel)]="model.address" #address="ngModel" required
+        class="form-control" [class.is-invalid]="address.invalid && (address.dirty || address.touched)"
+        [class.is-valid]="address.valid && (address.dirty || address.touched)"></textarea>
+      <div class="invalid-feedback">Please enter your address</div>
+    </div>
+    <div class="form-row">
+
+      <div class="form-group col-md-6"
+        [ngClass]="email.invalid && (email.touched || email.dirty) ? 'has-danger' : 'has-success'">
+        <label>Email id:</label>
+        <input type="text" email name="email" [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
+          [class.is-valid]="email.valid && (email.dirty || email.touched)" [(ngModel)]="model.email" #email="ngModel"
+          required class="form-control">
+        <div class="invalid-feedback">Please enter your valid email</div>
+      </div>
+      <div class="form-group  col-md-6"
+        [ngClass]="mobile.invalid && (mobile.touched || mobile.dirty) ? 'has-danger' : 'has-success'">
+        <label>Mobile No:</label>
+        <input type="number" name="mobile" [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)"
+          [class.is-valid]="mobile.valid && (mobile.dirty || mobile.touched)" [(ngModel)]="model.mobile"
+          #mobile="ngModel" required class="form-control">
+        <div class="invalid-feedback">Please enter your mobile no</div>
+      </div>
+    </div>
+    <div *ngIf="!editMode">
+      <button type="submit" class="btn btn-primary" [disabled]="!createMIS.form.valid">Save Data</button>
+    </div>
+    <div *ngIf="editMode">
+      <button type="button" class="btn btn-primary mr-2" (click)="updateData()"
+        [disabled]="!createMIS.form.valid || !createMIS.form.dirty">Update Data</button>
+      <button class="btn btn-warning" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+
+
+  <div class="col-md-12">
+
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-sm table-responsive">
       <thead>
         <tr>
           <th>Name</th>
@@ -21,8 +79,10 @@
           <td>{{ data.email }}</td>
           <td>{{ data.mobile }}</td>
           <td>
-            <button type="button" class="btn btn-sm btn-primary mr-1" [disabled]="editMode" (click)="edit(data)">Edit</button>
-            <button type="button" class="btn btn-sm btn-danger"  [disabled]="editMode" (click)="delete(data)">Delete</button>
+            <button type="button" class="btn btn-sm btn-primary mr-1" [disabled]="editMode"
+              (click)="edit(data)">Edit</button>
+            <button type="button" class="btn btn-sm btn-danger" [disabled]="editMode"
+              (click)="delete(data)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -33,52 +93,6 @@
       <tbody>
     </table>
   </div>
-  <form #createMIS="ngForm" (ngSubmit)="saveRecord()">
-    <div class="form-group" [class.has-success]="name.valid && (name.touched || name.dirty)"
-      [class.has-danger]="name.invalid && (name.touched || name.dirty)">
-      <label>Name:</label>
-      <input type="text" name="name" [(ngModel)]="model.name"
-        [ngClass]="name.valid && (name.touched || name.dirty) ? 'is-valid': 'is-invalid' " #name="ngModel" required
-        class="form-control">
-      <div class="invalid-feedback">Please enter your name</div>
-    </div>
-    <div class="form-group" [ngClass]="fname.invalid && (fname.touched || fname.dirty) ? 'has-danger' : 'has-success'">
-      <label>Father Name:</label>
-      <input type="text" name="fname" [(ngModel)]="model.fname" #fname="ngModel" required class="form-control"
-        [ngClass]="fname.valid && (fname.touched|| fname.dirty) ?  'is-valid':'is-invalid' ">
-      <div class="invalid-feedback">Please enter your father's name</div>
-    </div>
-    <div class="form-group"
-      [ngClass]="address.invalid && (address.touched || address.dirty) ? 'has-danger' : 'has-success'">
-      <label>Address:</label>
-      <textarea rows=3 cols="4" name="address" [(ngModel)]="model.address" #address="ngModel" required
-        class="form-control"
-        [ngClass]="address.valid && (address.touched || address.dirty) ? 'is-valid' : 'is-invalid'"></textarea>
-      <div class="invalid-feedback">Please enter your address</div>
-    </div>
-    <div class="form-group" [ngClass]="email.invalid && (email.touched || email.dirty) ? 'has-danger' : 'has-success'">
-      <label>Email id:</label>
-      <input type="text" email name="email"
-        [ngClass]="email.valid && (email.touched || email.dirty) ?  'is-valid' :'is-invalid'" [(ngModel)]="model.email"
-        #email="ngModel" required class="form-control">
-      <div class="invalid-feedback">Please enter your valid email</div>
-    </div>
-    <div class="form-group"
-      [ngClass]="mobile.invalid && (mobile.touched || mobile.dirty) ? 'has-danger' : 'has-success'">
-      <label>Mobile No:</label>
-      <input type="number" name="mobile"
-        [ngClass]="mobile.valid && (mobile.touched || mobile.dirty) ? 'is-valid' : 'is-invalid' "
-        [(ngModel)]="model.mobile" #mobile="ngModel" required class="form-control">
-      <div class="invalid-feedback">Please enter your mobile no</div>
-    </div>
-    <div *ngIf="!editMode">
-      <button type="submit" class="btn btn-primary" [disabled]="!createMIS.form.valid">Save Data</button>
-    </div>
-    <div *ngIf="editMode">
-      <button type="button" class="btn btn-primary mr-2" (click)="updateData()" [disabled]="!createMIS.form.valid || !createMIS.form.dirty">Update Data</button>
-      <button class="btn btn-warning" (click)="cancel()">Cancel</button>
-    </div>
-  </form>
 </div>
 
 
