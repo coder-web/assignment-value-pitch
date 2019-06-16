@@ -7,6 +7,7 @@ import { UserService } from '../_services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
+import { NgForm, FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -69,7 +70,7 @@ export class DashboardComponent implements OnInit {
       { data: 'mobile', width: '10%' }, { data: '', orderable: false }]
     };
   }
-  saveRecord = () => {
+  saveRecord = (form) => {
     this.openSpinner();
     this.misService.saveData(this.model).subscribe(
       (apiResponse) => {
@@ -77,7 +78,7 @@ export class DashboardComponent implements OnInit {
           this.toastr.success(apiResponse.message);
           // this.getMisRecords();
           this.rerender();
-          this.model = { name: '', fname: '', mobile: 0, email: '', address: '', createdBy: '' }
+          form.reset();
         }
         else
           this.toastr.error(apiResponse.message);
@@ -121,15 +122,15 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
-  updateData = () => {
+  updateData = (form) => {
     this.openSpinner();
     this.misService.edit(this.model).subscribe((apiResponse) => {
       if (apiResponse.status === 202) {
         this.toastr.warning('Not updated')
       } else {
-        this.model = { name: '', fname: '', mobile: 0, email: '', address: '', createdBy: '' }
+        form.reset();
         this.toastr.success(apiResponse.message);
-        this.editMode=false;
+        this.editMode = false;
         // this.allMISData = this.allMISData.filter(x => x.misId !== data.misId);
         this.rerender();
       }
@@ -140,8 +141,8 @@ export class DashboardComponent implements OnInit {
       this.openSpinner(false);
     })
   }
-  cancel = () => {
-    this.model = { name: '', fname: '', mobile: 0, email: '', address: '', createdBy: '' }
+  cancel = (form) => {
+    form.reset();
     this.editMode = false;
     this.rerender();
   }

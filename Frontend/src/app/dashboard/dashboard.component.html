@@ -1,6 +1,6 @@
 <div class="offset-md-2 col-md-8 pb-5">
 
-  <form #createMIS="ngForm" (ngSubmit)="saveRecord()" class="mb-5">
+  <form #createMIS="ngForm" (ngSubmit)="saveRecord(createMIS)" class="mb-5">
     <div class="form-row">
       <div class="form-group col-md-6" [class.has-success]="name.valid && (name.touched || name.dirty)"
         [class.has-danger]="name.invalid && (name.touched || name.dirty)">
@@ -51,9 +51,9 @@
       <button type="submit" class="btn btn-primary" [disabled]="!createMIS.form.valid">Save Data</button>
     </div>
     <div *ngIf="editMode">
-      <button type="button" class="btn btn-primary mr-2" (click)="updateData()"
+      <button type="button" class="btn btn-primary mr-2" (click)="updateData(createMIS)"
         [disabled]="!createMIS.form.valid || !createMIS.form.dirty">Update Data</button>
-      <button class="btn btn-warning" (click)="cancel()">Cancel</button>
+      <button class="btn btn-warning" (click)="cancel(createMIS)">Cancel</button>
     </div>
   </form>
 
